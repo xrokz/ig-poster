@@ -1,2 +1,4 @@
 node_modules/*
 .vscode/launch.json
+*.png
+out.png

@@ -52,14 +52,15 @@ class User:
 		self.submit['state'] = 'disabled'
 		img = Img.open(self.filename, 'r')
 		img_w, img_h = img.size
-		background = Img.new('RGBA', (img_w+50, img_h+50), (255, 255, 255, 255))
+		border = 50
+		background = Img.new('RGBA', (img_w+border, int(img_h+border*1.5)), (255, 255, 255, 255))
 		bg_w, bg_h = background.size
-		offset = (bg_w // 28, bg_h // 28)
+		offset = ((border//2) , int((border+10)))
 		background.paste(img, offset)
 		background.save('out.png')
 
 
-		messagebox.showinfo("Output", "Are you ok with this ?")
+		# messagebox.showinfo("Output", "Are you ok with this ?")
 
 		self.submit['state'] = 'normal'
 
