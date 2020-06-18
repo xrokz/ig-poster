@@ -1,6 +1,8 @@
-import requests, os, sys, json, colorama, PIL
+import requests, os, sys, json, colorama
+from PIL import Image as Img
 from tkinter import *
 from tkinter.filedialog import askopenfilename
+from tkinter import messagebox
 
 class workers:
 	def __init__(self, action):
@@ -19,6 +21,7 @@ class User:
 		self.cap_label = Label(self.root, text="Caption:")
 		self.caption = Text(self.root, height=2, width=30)
 		self.submit = Button(self.root, text="Submit...", command=self.submit)
+		self.filename = None
 
 	def runGui(self):
 		print("RUNGUI: Rendering the page")
@@ -40,14 +43,25 @@ class User:
 			('Video files', '*.mp4;*.mov'),
 		]
 
-		filename = askopenfilename(filetypes=ftypes)
-		print("IMAGE_CHOOSE: Selected: {}".format(filename))
-		self.img_txt.set(filename)
+		self.filename = askopenfilename(filetypes=ftypes)
+		print("IMAGE_CHOOSE: Selected: {}".format(self.filename ))
+		self.img_txt.set(self.filename )
 
 	def submit(self):
 		print("SUBMIT: Making the image...")
 		self.submit['state'] = 'disabled'
-		# self.submit['state'] = 'normal'
+		img = Img.open(self.filename, 'r')
+		img_w, img_h = img.size
+		background = Img.new('RGBA', (img_w+50, img_h+50), (255, 255, 255, 255))
+		bg_w, bg_h = background.size
+		offset = (bg_w // 28, bg_h // 28)
+		background.paste(img, offset)
+		background.save('out.png')
+
+
+		messagebox.showinfo("Output", "Are you ok with this ?")
+
+		self.submit['state'] = 'normal'
 
 
 
